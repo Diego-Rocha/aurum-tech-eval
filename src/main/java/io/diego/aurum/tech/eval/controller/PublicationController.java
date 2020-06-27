@@ -6,10 +6,10 @@ import io.diego.aurum.tech.eval.model.entity.Publication;
 import io.diego.aurum.tech.eval.service.PublicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -21,8 +21,26 @@ public class PublicationController {
     private final PublicationService service;
 
     @PostMapping
-    public void save(@Valid @RequestBody PublicationDTO publicationDTO) {
-        Publication publication = PublicationBusiness.to(publicationDTO);
-        service.save(publication);
+    public Long save(@Valid @RequestBody PublicationDTO publicationDTO) {
+        Publication publication = PublicationBusiness.toEntity(publicationDTO);
+        publication = service.save(publication);
+        return publication.getId();
+    }
+
+    @DeleteMapping("/{publicationId}")
+    public void delete(@PathVariable Long publicationId) {
+        service.delete(publicationId);
+    }
+
+    @DeleteMapping
+    public void deleteAll() {
+        service.deleteAll();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<PublicationDTO>> list(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Publication> publicationPage = service.list(PageRequest.of(page, size));
+        Page<PublicationDTO> publicationDTOPage = publicationPage.map(PublicationBusiness::toDTO);
+        return ResponseEntity.ok(publicationDTOPage);
     }
 }

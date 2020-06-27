@@ -19,8 +19,8 @@ Please see the [mission file](docs/mission.pdf)
         - [x] or parse date from clippingMatter
         - [x] or plus 3 business days from clippingDate
     - [x] FR 3: when is important then create alert
-    - [ ] FR 4: delete one/all publications
-    - [ ] FR 5: list the publications with pagination
+    - [x] FR 4: delete one/all publications
+    - [x] FR 5: list the publications with pagination
     - [ ] FR 6: find a publication and mark then as viewed
     - [ ] FR 7: list alerts with pagination
     - [ ] FR 8: list commitments with pagination

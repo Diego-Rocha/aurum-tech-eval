@@ -20,16 +20,10 @@ import java.util.regex.Pattern;
 public class PublicationBusiness {
 
     private final Pattern DATE_PARSER_PATTERN = Pattern.compile("(?i)(.*)(concilia[c|ç][a|ã]o|audi[e|ê]ncia) para a data de (.*) [a|à]s (\\d{2}:\\d{2})h(.*)");
-    private final int DATE_GROUP = 3;
-    private final int TIME_GROUP = 4;
     private final Collection<DateTimeFormatter> KNOW_DATE_FORMATS = new ArrayList<DateTimeFormatter>() {{
         add(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         add(DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy"));
     }};
-    private final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
-    private final int DAYS_TO_ADD = 3;
-    private final int SATURDAY_TO_MONDAY_IN_DAYS = 2;
-    private final int SUNDAY_TO_MONDAY_IN_DAYS = 1;
 
     public void beforeSave(Publication publication) {
         createAppointment(publication);
@@ -66,8 +60,8 @@ public class PublicationBusiness {
             publication.getAppointment().setDate(autoScheduler(publication));
             return;
         }
-        String dateText = matcher.group(DATE_GROUP);
-        String timeText = matcher.group(TIME_GROUP);
+        String dateText = matcher.group(3);
+        String timeText = matcher.group(4);
         LocalDateTime date = parseDateTime(dateText, timeText);
         if (date != null) {
             publication.getAppointment().setDate(date);
@@ -80,7 +74,7 @@ public class PublicationBusiness {
         for (DateTimeFormatter dateFormat : KNOW_DATE_FORMATS) {
             try {
                 LocalDate date = LocalDate.from(dateFormat.parse(dateText));
-                LocalTime time = LocalTime.from(TIME_FORMAT.parse(timeText));
+                LocalTime time = LocalTime.from(DateTimeFormatter.ofPattern("HH:mm").parse(timeText));
                 return LocalDateTime.of(date, time);
             } catch (RuntimeException e) {
                 e.printStackTrace();
@@ -91,18 +85,18 @@ public class PublicationBusiness {
     }
 
     private LocalDateTime autoScheduler(Publication publication) {
-        LocalDate schedulerDate = publication.getClippingDate().plusDays(DAYS_TO_ADD);
+        LocalDate schedulerDate = publication.getClippingDate().plusDays(3);
         switch (schedulerDate.getDayOfWeek()) {
             case SATURDAY:
-                return schedulerDate.plusDays(SATURDAY_TO_MONDAY_IN_DAYS).atStartOfDay();
+                return schedulerDate.plusDays(2).atStartOfDay();
             case SUNDAY:
-                return schedulerDate.plusDays(SUNDAY_TO_MONDAY_IN_DAYS).atStartOfDay();
+                return schedulerDate.plusDays(1).atStartOfDay();
             default:
                 return schedulerDate.atStartOfDay();
         }
     }
 
-    public Publication to(PublicationDTO publicationDTO) {
+    public Publication toEntity(PublicationDTO publicationDTO) {
         Publication publication = new Publication();
         publication.setClippingDate(publicationDTO.getClippingDate());
         publication.setClippingMatter(publicationDTO.getClippingMatter());
@@ -118,13 +112,15 @@ public class PublicationBusiness {
         return publication;
     }
 
-    public PublicationDTO from(Publication publication) {
+    public PublicationDTO toDTO(Publication publication) {
         PublicationDTO dto = new PublicationDTO();
         dto.setClippingDate(publication.getClippingDate());
         dto.setClippingMatter(publication.getClippingMatter());
         dto.setClassificationType(publication.getClassificationType());
-        dto.setClassifiedDate(LocalDate.from(publication.getClassifiedDate()));
-        dto.setClassifiedTime(LocalTime.from(publication.getClassifiedDate()));
+        if(publication.getClassifiedDate() != null) {
+            dto.setClassifiedDate(LocalDate.from(publication.getClassifiedDate()));
+            dto.setClassifiedTime(LocalTime.from(publication.getClassifiedDate()));
+        }
         dto.setImportant(publication.isImportant());
         return dto;
     }
