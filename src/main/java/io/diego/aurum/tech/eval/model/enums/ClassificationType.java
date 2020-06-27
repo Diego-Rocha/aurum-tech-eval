@@ -1,4 +1,4 @@
-package io.diego.aurum.tech.eval.entity;
+package io.diego.aurum.tech.eval.model.enums;
 
 public enum ClassificationType {
     HEARING,

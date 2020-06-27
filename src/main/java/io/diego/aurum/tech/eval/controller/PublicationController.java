@@ -1,6 +1,8 @@
 package io.diego.aurum.tech.eval.controller;
 
-import io.diego.aurum.tech.eval.entity.Publication;
+import io.diego.aurum.tech.eval.business.PublicationBusiness;
+import io.diego.aurum.tech.eval.model.dto.PublicationDTO;
+import io.diego.aurum.tech.eval.model.entity.Publication;
 import io.diego.aurum.tech.eval.service.PublicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,8 @@ public class PublicationController {
     private final PublicationService service;
 
     @PostMapping
-    public void save(@Valid @RequestBody Publication publication){
+    public void save(@Valid @RequestBody PublicationDTO publicationDTO) {
+        Publication publication = PublicationBusiness.to(publicationDTO);
         service.save(publication);
     }
 }

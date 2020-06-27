@@ -1,6 +1,6 @@
 package io.diego.aurum.tech.eval.controller;
 
-import io.diego.aurum.tech.eval.entity.Publication;
+import io.diego.aurum.tech.eval.model.dto.PublicationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -52,8 +52,8 @@ public class PublicationControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
                 .andReturn().getResolvedException()).getMessage();
-        assertTrue(response.contains(Publication.CLIPPING_DATE_IS_REQUIRED));
-        assertTrue(response.contains(Publication.CLIPPING_MATTER_IS_REQUIRED));
+        assertTrue(response.contains(PublicationDTO.CLIPPING_DATE_IS_REQUIRED));
+        assertTrue(response.contains(PublicationDTO.CLIPPING_MATTER_IS_REQUIRED));
     }
 
     @Test
@@ -65,8 +65,8 @@ public class PublicationControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
                 .andReturn().getResolvedException()).getMessage();
-        assertTrue(response.contains(Publication.CLIPPING_DATE_IS_REQUIRED));
-        assertFalse(response.contains(Publication.CLIPPING_MATTER_IS_REQUIRED));
+        assertTrue(response.contains(PublicationDTO.CLIPPING_DATE_IS_REQUIRED));
+        assertFalse(response.contains(PublicationDTO.CLIPPING_MATTER_IS_REQUIRED));
     }
 
     @Test
@@ -78,8 +78,8 @@ public class PublicationControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
                 .andReturn().getResolvedException()).getMessage();
-        assertFalse(response.contains(Publication.CLIPPING_DATE_IS_REQUIRED));
-        assertTrue(response.contains(Publication.CLIPPING_MATTER_IS_REQUIRED));
+        assertFalse(response.contains(PublicationDTO.CLIPPING_DATE_IS_REQUIRED));
+        assertTrue(response.contains(PublicationDTO.CLIPPING_MATTER_IS_REQUIRED));
     }
 
 }
