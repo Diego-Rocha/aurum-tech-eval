@@ -1,6 +1,7 @@
 package io.diego.aurum.tech.eval.controller;
 
 import io.diego.aurum.tech.eval.business.PublicationBusiness;
+import io.diego.aurum.tech.eval.converter.PublicationConverter;
 import io.diego.aurum.tech.eval.model.dto.PublicationDTO;
 import io.diego.aurum.tech.eval.model.entity.Publication;
 import io.diego.aurum.tech.eval.service.PublicationService;
@@ -22,7 +23,7 @@ public class PublicationController {
 
     @PostMapping
     public Long save(@Valid @RequestBody PublicationDTO publicationDTO) {
-        Publication publication = PublicationBusiness.toEntity(publicationDTO);
+        Publication publication = PublicationConverter.convert(publicationDTO);
         publication = service.save(publication);
         return publication.getId();
     }
@@ -40,7 +41,7 @@ public class PublicationController {
     @GetMapping
     public ResponseEntity<Page<PublicationDTO>> list(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Page<Publication> publicationPage = service.list(PageRequest.of(page, size));
-        Page<PublicationDTO> publicationDTOPage = publicationPage.map(PublicationBusiness::toDTO);
+        Page<PublicationDTO> publicationDTOPage = publicationPage.map(PublicationConverter::convert);
         return ResponseEntity.ok(publicationDTOPage);
     }
 }

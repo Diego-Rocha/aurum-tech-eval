@@ -1,18 +1,30 @@
 # aurum-tech-eval
 
-Please see the [mission file](docs/mission.pdf)
+This project is mandatory as part of Aurum's recruitment and selection policy.
+
+[Original requirement](./docs/mission.pdf)
 
 ## Console (Bash)
 ```bash
-# to build
-./gradlew build
+# Define your GCP Credentials (REQUIRED)
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/gcp/credentials.json
 
-# to run (opens on http://localhost:8080)
-./gradlew bootRun
+# Build the app
+> ./gradlew build
+
+# Runs the app (avaliable at http://localhost:8080/publication)
+> ./gradlew bootRun
+
+# Generates the jar
+> ./gradlew bootJar
+
+# Generates the Code Coverage Report
+> ./gradlew jacocoTestReport
+
 ```
 ## Checklist
 
-- [ ] Working API
+- [ ] Working API (**Required**)
     - [x] FR 1: save publications
     - [x] FR 2: when type is HEARING then save on schedule
         - [x] get date from classifiedDate
@@ -21,20 +33,17 @@ Please see the [mission file](docs/mission.pdf)
     - [x] FR 3: when is important then create alert
     - [x] FR 4: delete one/all publications
     - [x] FR 5: list the publications with pagination
-    - [ ] FR 6: find a publication and mark then as viewed
+    - [ ] FR 6: view a publication and mark then as viewed
     - [ ] FR 7: list alerts with pagination
     - [ ] FR 8: list commitments with pagination
-- [x] Unit Tests
-- [ ] Deploy on Goggle App Engine Standard
-- [x] API Docs 
-- [x] Quality code with Codebeat (GPA > 3) 
+- [x] Unit Tests (**Required**)
+- [ ] Deploy on Goggle App Engine Standard (25pts)
+- [x] Quality code with Codebeat (GPA > 3 = 20pts)
   - Currently: [![codebeat badge](https://codebeat.co/badges/3c364388-42ca-40ac-9630-127afe3604c6)](https://codebeat.co/projects/github-com-diego-rocha-aurum-tech-eval-dev)
-- [x] A Good Readme 
-- [x] Hosted on Github
+- [ ] API Docs  (20pts)
+- [x] A Good Readme and Hosted on Github (10pts)
 
-*Obs: FR = Funcional Requiremen*t
-
-## Project Release
+## Project TimeLine
 - Start: 2020-06-25
 - Deadline: 2020-07-02
 
@@ -44,3 +53,6 @@ Please see the [mission file](docs/mission.pdf)
  - Gradle
  - Google Cloud API
  - Lombok
+ 
+## Extras
+ - [Code Coverage needs to be > 90%](./build/reports/jacoco/test/html/index.html) (need to build app first)

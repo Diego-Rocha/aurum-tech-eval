@@ -2,12 +2,16 @@ package io.diego.aurum.tech.eval.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.diego.aurum.tech.eval.business.PublicationBusiness;
+import io.diego.aurum.tech.eval.converter.PublicationConverter;
 import io.diego.aurum.tech.eval.model.dto.PublicationDTO;
 import io.diego.aurum.tech.eval.model.entity.Publication;
 import io.diego.aurum.tech.eval.repository.PublicationRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +19,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.ResourceUtils;
@@ -36,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@AutoConfigureRestDocs(outputDir = "build/snippets")
+@AutoConfigureRestDocs
 public class PublicationControllerIntegrationTest {
 
     @Autowired
@@ -70,8 +76,8 @@ public class PublicationControllerIntegrationTest {
 
             PublicationDTO publicationDTO = objectMapper.readValue(validJson.getValue(), PublicationDTO.class);
 
-            Publication publicationToSave = PublicationBusiness.toEntity(publicationDTO);
-            Publication publicationSaved = PublicationBusiness.toEntity(publicationDTO);
+            Publication publicationToSave = PublicationConverter.convert(publicationDTO);
+            Publication publicationSaved = PublicationConverter.convert(publicationDTO);
             publicationSaved.setId(validJson.getKey());
             savedPublications.add(publicationToSave);
             when(publicationMockRepository.save(publicationToSave)).thenReturn(publicationSaved);

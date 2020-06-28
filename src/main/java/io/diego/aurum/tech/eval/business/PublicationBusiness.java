@@ -1,6 +1,5 @@
 package io.diego.aurum.tech.eval.business;
 
-import io.diego.aurum.tech.eval.model.dto.PublicationDTO;
 import io.diego.aurum.tech.eval.model.entity.Alert;
 import io.diego.aurum.tech.eval.model.entity.Appointment;
 import io.diego.aurum.tech.eval.model.entity.Publication;
@@ -11,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -76,8 +76,7 @@ public class PublicationBusiness {
                 LocalDate date = LocalDate.from(dateFormat.parse(dateText));
                 LocalTime time = LocalTime.from(DateTimeFormatter.ofPattern("HH:mm").parse(timeText));
                 return LocalDateTime.of(date, time);
-            } catch (RuntimeException e) {
-                e.printStackTrace();
+            } catch (DateTimeParseException e) {
                 //ignore and try the next one
             }
         }
@@ -94,35 +93,6 @@ public class PublicationBusiness {
             default:
                 return schedulerDate.atStartOfDay();
         }
-    }
-
-    public Publication toEntity(PublicationDTO publicationDTO) {
-        Publication publication = new Publication();
-        publication.setClippingDate(publicationDTO.getClippingDate());
-        publication.setClippingMatter(publicationDTO.getClippingMatter());
-        publication.setClassificationType(publicationDTO.getClassificationType());
-
-        if (publicationDTO.getClassifiedDate() != null && publicationDTO.getClassifiedTime() != null) {
-            publication.setClassifiedDate(LocalDateTime.of(publicationDTO.getClassifiedDate(), publicationDTO.getClassifiedTime()));
-        } else if (publicationDTO.getClassifiedDate() != null) {
-            publication.setClassifiedDate(publicationDTO.getClassifiedDate().atStartOfDay());
-        }
-
-        publication.setImportant(publicationDTO.isImportant());
-        return publication;
-    }
-
-    public PublicationDTO toDTO(Publication publication) {
-        PublicationDTO dto = new PublicationDTO();
-        dto.setClippingDate(publication.getClippingDate());
-        dto.setClippingMatter(publication.getClippingMatter());
-        dto.setClassificationType(publication.getClassificationType());
-        if(publication.getClassifiedDate() != null) {
-            dto.setClassifiedDate(LocalDate.from(publication.getClassifiedDate()));
-            dto.setClassifiedTime(LocalTime.from(publication.getClassifiedDate()));
-        }
-        dto.setImportant(publication.isImportant());
-        return dto;
     }
 
 }
