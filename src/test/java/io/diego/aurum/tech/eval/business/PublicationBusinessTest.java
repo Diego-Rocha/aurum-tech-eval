@@ -20,52 +20,61 @@ public class PublicationBusinessTest {
     private final Map<Publication, String> tableTest = new HashMap<>();
 
     {
-        Publication pubNoHearingNoScheduler = new Publication();
-        pubNoHearingNoScheduler.setClassificationType(ClassificationType.DEADLINE);
+        Publication pubNoHearingNoScheduler = Publication.builder()
+                .classificationType(ClassificationType.DEADLINE)
+                .build();
         tableTest.put(pubNoHearingNoScheduler, null);
 
-        Publication pubHearingGetDateFromClassifiedDate = new Publication();
-        pubHearingGetDateFromClassifiedDate.setClassificationType(ClassificationType.HEARING);
-        pubHearingGetDateFromClassifiedDate.setClassifiedDate(LocalDateTime.of(2020, 1, 15, 14, 9, 0));
-        pubHearingGetDateFromClassifiedDate.setClippingMatter("lorem ipsum conciliacao para a data de 01/02/2020 as 11:05h dolor sit amet");
+        Publication pubHearingGetDateFromClassifiedDate = Publication.builder()
+                .classificationType(ClassificationType.HEARING)
+                .classifiedDate(LocalDateTime.of(2020, 1, 15, 14, 9, 0))
+                .clippingMatter("lorem ipsum conciliacao para a data de 01/02/2020 as 11:05h dolor sit amet")
+                .build();
         tableTest.put(pubHearingGetDateFromClassifiedDate, "2020-01-15 14:09");
 
-        Publication pubHearingNeedParse = new Publication();
-        pubHearingNeedParse.setClassificationType(ClassificationType.HEARING);
-        pubHearingNeedParse.setClippingMatter("lorem ipsum conciliacao para a data de 01/02/2020 as 11:05h dolor sit amet");
+        Publication pubHearingNeedParse = Publication.builder()
+                .classificationType(ClassificationType.HEARING)
+                .clippingMatter("lorem ipsum conciliacao para a data de 01/02/2020 as 11:05h dolor sit amet")
+                .build();
         tableTest.put(pubHearingNeedParse, "2020-02-01 11:05");
 
-        Publication pubHearingNeedParse2 = new Publication();
-        pubHearingNeedParse2.setClassificationType(ClassificationType.HEARING);
-        pubHearingNeedParse2.setClippingMatter("lorem ipsum conciliacao para a data de 20 de janeiro de 2020 as 09:03h dolor sit amet");
+        Publication pubHearingNeedParse2 = Publication.builder()
+                .classificationType(ClassificationType.HEARING)
+                .clippingMatter("lorem ipsum conciliacao para a data de 20 de janeiro de 2020 as 09:03h dolor sit amet")
+                .build();
         tableTest.put(pubHearingNeedParse2, "2020-01-20 09:03");
 
-        Publication pubHearingNeedParseWithAccentAndCapitalized = new Publication();
-        pubHearingNeedParseWithAccentAndCapitalized.setClassificationType(ClassificationType.HEARING);
-        pubHearingNeedParseWithAccentAndCapitalized.setClippingMatter("lorem ipsum Conciliação para a data de 02/05/2022 às 04:07h");
+        Publication pubHearingNeedParseWithAccentAndCapitalized = Publication.builder()
+                .classificationType(ClassificationType.HEARING)
+                .clippingMatter("lorem ipsum Conciliação para a data de 02/05/2022 às 04:07h")
+                .build();
         tableTest.put(pubHearingNeedParseWithAccentAndCapitalized, "2022-05-02 04:07");
 
-        Publication pubHearingNeedParseWithCourtHearingAccentAndCapitalized = new Publication();
-        pubHearingNeedParseWithCourtHearingAccentAndCapitalized.setClassificationType(ClassificationType.HEARING);
-        pubHearingNeedParseWithCourtHearingAccentAndCapitalized.setClippingMatter("Audiência para a data de 03/12/2001 às 07:08h dolor sit amet");
+        Publication pubHearingNeedParseWithCourtHearingAccentAndCapitalized = Publication.builder()
+                .classificationType(ClassificationType.HEARING)
+                .clippingMatter("Audiência para a data de 03/12/2001 às 07:08h dolor sit amet")
+                .build();
         tableTest.put(pubHearingNeedParseWithCourtHearingAccentAndCapitalized, "2001-12-03 07:08");
 
-        Publication pubHearingNeedParseWithNoValidParseAtWeekDay = new Publication();
-        pubHearingNeedParseWithNoValidParseAtWeekDay.setClassificationType(ClassificationType.HEARING);
-        pubHearingNeedParseWithNoValidParseAtWeekDay.setClippingDate(LocalDate.of(2020, 6, 8));
-        pubHearingNeedParseWithNoValidParseAtWeekDay.setClippingMatter("lorem dolor sit amet");
+        Publication pubHearingNeedParseWithNoValidParseAtWeekDay = Publication.builder()
+                .classificationType(ClassificationType.HEARING)
+                .clippingDate(LocalDate.of(2020, 6, 8))
+                .clippingMatter("lorem dolor sit amet")
+                .build();
         tableTest.put(pubHearingNeedParseWithNoValidParseAtWeekDay, "2020-06-11 00:00");
 
-        Publication pubHearingNeedParseWithNoValidParseAtSaturday = new Publication();
-        pubHearingNeedParseWithNoValidParseAtSaturday.setClassificationType(ClassificationType.HEARING);
-        pubHearingNeedParseWithNoValidParseAtSaturday.setClippingDate(LocalDate.of(2020, 6, 10));
-        pubHearingNeedParseWithNoValidParseAtSaturday.setClippingMatter("lorem dolor sit amet");
+        Publication pubHearingNeedParseWithNoValidParseAtSaturday = Publication.builder()
+                .classificationType(ClassificationType.HEARING)
+                .clippingDate(LocalDate.of(2020, 6, 10))
+                .clippingMatter("lorem dolor sit amet")
+                .build();
         tableTest.put(pubHearingNeedParseWithNoValidParseAtSaturday, "2020-06-15 00:00");
 
-        Publication pubHearingNeedParseWithNoValidParseAtSunday = new Publication();
-        pubHearingNeedParseWithNoValidParseAtSunday.setClassificationType(ClassificationType.HEARING);
-        pubHearingNeedParseWithNoValidParseAtSunday.setClippingDate(LocalDate.of(2020, 6, 11));
-        pubHearingNeedParseWithNoValidParseAtSunday.setClippingMatter("lorem dolor sit amet");
+        Publication pubHearingNeedParseWithNoValidParseAtSunday = Publication.builder()
+                .classificationType(ClassificationType.HEARING)
+                .clippingDate(LocalDate.of(2020, 6, 11))
+                .clippingMatter("lorem dolor sit amet")
+                .build();
         tableTest.put(pubHearingNeedParseWithNoValidParseAtSunday, "2020-06-15 00:00");
     }
 

@@ -2,8 +2,7 @@ package io.diego.aurum.tech.eval.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.diego.aurum.tech.eval.model.enums.ClassificationType;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,6 +11,9 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PublicationDTO {
 
     public static final String CLIPPING_DATE_IS_REQUIRED = "clippingDate is required";

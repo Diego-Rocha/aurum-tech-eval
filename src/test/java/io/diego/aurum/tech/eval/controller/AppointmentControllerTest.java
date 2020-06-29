@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,21 +57,21 @@ public class AppointmentControllerTest {
 
     private void initMocks() throws IOException {
 
-        List<Appointment> appointments = new ArrayList<>();
-        Appointment appointment1 = new Appointment();
-        appointment1.setId(1L);
-        appointment1.setDate(LocalDateTime.now());
-        appointments.add(appointment1);
-
-        Appointment appointment2 = new Appointment();
-        appointment2.setId(2L);
-        appointment2.setDate(LocalDateTime.now().plusDays(3));
-
         File payload = ResourceUtils.getFile("classpath:payload/publication/valid/1.json");
         Publication publication = PublicationConverter.convert(objectMapper.readValue(payload, PublicationDTO.class));
-        publication.setAppointment(appointment2);
-        appointment2.setPublication(publication);
-        appointments.add(appointment2);
+
+        List<Appointment> appointments = Arrays.asList(
+                Appointment.builder()
+                        .id(1L)
+                        .date(LocalDateTime.now())
+                        .build()
+                ,
+                Appointment.builder()
+                        .id(2L)
+                        .date(LocalDateTime.now().plusDays(3))
+                        .publication(publication)
+                        .build()
+        );
 
         PageRequest pageRequestDefault = PageRequest.of(0, 10);
         when(appointmentMockRepository.findAll(pageRequestDefault)).thenReturn(new PageImpl<>(appointments, pageRequestDefault, mockSize));
@@ -81,7 +81,6 @@ public class AppointmentControllerTest {
 
         PageRequest pageRequestOutOfRange = PageRequest.of(99, 1);
         when(appointmentMockRepository.findAll(pageRequestOutOfRange)).thenReturn(new PageImpl<>(Collections.emptyList(), pageRequestOutOfRange, mockSize));
-
     }
 
     @Test

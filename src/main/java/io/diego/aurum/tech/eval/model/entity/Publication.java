@@ -1,9 +1,7 @@
 package io.diego.aurum.tech.eval.model.entity;
 
 import io.diego.aurum.tech.eval.model.enums.ClassificationType;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Reference;
 
@@ -14,6 +12,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = {"clippingDate", "clippingMatter", "classificationType", "classifiedDate", "important"})
 public class Publication {
 

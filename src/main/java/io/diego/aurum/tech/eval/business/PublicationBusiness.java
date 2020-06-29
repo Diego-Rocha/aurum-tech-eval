@@ -35,9 +35,10 @@ public class PublicationBusiness {
         if (!publication.isImportant()) {
             return;
         }
-        Alert alert = new Alert();
-        alert.setDate(LocalDateTime.now());
-        alert.setPublication(publication);
+        Alert alert = Alert.builder()
+                .date(LocalDateTime.now())
+                .publication(publication)
+                .build();
         publication.setAlert(alert);
     }
 
@@ -45,27 +46,25 @@ public class PublicationBusiness {
         if (!ClassificationType.HEARING.equals(publication.getClassificationType())) {
             return;
         }
-        Appointment appointment = new Appointment();
-        appointment.setDate(publication.getClassifiedDate());
-        appointment.setPublication(publication);
+        Appointment appointment = Appointment.builder()
+                .date(resolveAppointmentDate(publication))
+                .publication(publication)
+                .build();
         publication.setAppointment(appointment);
-
-        if (appointment.getDate() == null) {
-            resolveAppointmentDate(publication);
-        }
 
     }
 
-    private void resolveAppointmentDate(Publication publication) {
+    private LocalDateTime resolveAppointmentDate(Publication publication) {
+        if(publication.getClassifiedDate() != null){
+            return publication.getClassifiedDate();
+        }
         Matcher matcher = DATE_PARSER_PATTERN.matcher(publication.getClippingMatter());
         if (!matcher.matches()) {
-            publication.getAppointment().setDate(autoScheduler(publication));
-            return;
+            return autoScheduler(publication);
         }
         String dateText = matcher.group(3);
         String timeText = matcher.group(4);
-        LocalDateTime date = parseDateTime(dateText, timeText);
-        publication.getAppointment().setDate(date);
+        return parseDateTime(dateText, timeText);
     }
 
     private LocalDateTime parseDateTime(String dateText, String timeText) {

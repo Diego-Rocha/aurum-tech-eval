@@ -8,13 +8,11 @@ import lombok.experimental.UtilityClass;
 public class AlertConverter {
 
     public AlertDTO convert(Alert entity) {
-        AlertDTO dto = new AlertDTO();
-        dto.setId(entity.getId());
-        dto.setDate(entity.getDate());
-        if (entity.getPublication() != null) {
-            dto.setPublication(PublicationConverter.convert(entity.getPublication()));
-        }
-        return dto;
+        return AlertDTO.builder()
+                .id(entity.getId())
+                .date(entity.getDate())
+                .publication(entity.getPublication() != null ? PublicationConverter.convert(entity.getPublication()) : null)
+                .build();
     }
 
 }

@@ -8,13 +8,11 @@ import lombok.experimental.UtilityClass;
 public class AppointmentConverter {
 
     public AppointmentDTO convert(Appointment entity) {
-        AppointmentDTO dto = new AppointmentDTO();
-        dto.setId(entity.getId());
-        dto.setDate(entity.getDate());
-        if (entity.getPublication() != null) {
-            dto.setPublication(PublicationConverter.convert(entity.getPublication()));
-        }
-        return dto;
+        return AppointmentDTO.builder()
+                .id(entity.getId())
+                .date(entity.getDate())
+                .publication(entity.getPublication() != null ? PublicationConverter.convert(entity.getPublication()) : null)
+                .build();
     }
 
 }

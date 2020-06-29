@@ -24,23 +24,26 @@ public class DevPayload {
     private final PublicationService publicationService;
 
     private final List<Publication> payload = new ArrayList<Publication>() {{
-        Publication publication = new Publication();
-        publication.setClippingDate(LocalDate.now());
-        publication.setClassificationType(ClassificationType.DEADLINE);
-        publication.setClippingMatter("a");
+        Publication publication = Publication.builder()
+                .clippingDate(LocalDate.now())
+                .classificationType(ClassificationType.DEADLINE)
+                .clippingMatter("a")
+                .build();
         add(publication);
 
-        publication = new Publication();
-        publication.setClippingDate(LocalDate.now().plusDays(1));
-        publication.setClippingMatter("b");
-        publication.setClassificationType(ClassificationType.HEARING);
-        publication.setClassifiedDate(LocalDateTime.now().plusDays(4).plusHours(2));
+        publication = Publication.builder()
+                .clippingDate(LocalDate.now().plusDays(1))
+                .clippingMatter("b")
+                .classificationType(ClassificationType.HEARING)
+                .classifiedDate(LocalDateTime.now().plusDays(4).plusHours(2))
+                .build();
         add(publication);
 
-        publication = new Publication();
-        publication.setClippingDate(LocalDate.now().plusDays(1));
-        publication.setClippingMatter("audiencia para a data de 27 de janeiro de 2020 as 11:30h");
-        publication.setImportant(true);
+        publication = Publication.builder()
+                .clippingDate(LocalDate.now().plusDays(1))
+                .clippingMatter("audiencia para a data de 27 de janeiro de 2020 as 11:30h")
+                .important(true)
+                .build();
         add(publication);
 
     }};

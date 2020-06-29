@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class AlertControllerTest {
     @MockBean
     private AlertRepository alertMockRepository;
 
-    private int mockSize = 2;
+    private final int mockSize = 2;
 
     @PostConstruct
     public void init() throws Exception {
@@ -57,21 +57,21 @@ public class AlertControllerTest {
 
     private void initMocks() throws IOException {
 
-        List<Alert> alerts = new ArrayList<>();
-        Alert alert1 = new Alert();
-        alert1.setId(1L);
-        alert1.setDate(LocalDateTime.now());
-        alerts.add(alert1);
-
-        Alert alert2 = new Alert();
-        alert2.setId(1L);
-        alert2.setDate(LocalDateTime.now().plusDays(3));
-
         File payload = ResourceUtils.getFile("classpath:payload/publication/valid/1.json");
         Publication publication = PublicationConverter.convert(objectMapper.readValue(payload, PublicationDTO.class));
-        publication.setAlert(alert2);
-        alert2.setPublication(publication);
-        alerts.add(alert2);
+
+        List<Alert> alerts = Arrays.asList(
+                Alert.builder()
+                        .id(1L)
+                        .date(LocalDateTime.now())
+                        .build()
+                ,
+                Alert.builder()
+                        .id(2L)
+                        .date(LocalDateTime.now().plusDays(3))
+                        .publication(publication)
+                        .build()
+        );
 
         PageRequest pageRequestDefault = PageRequest.of(0, 10);
         when(alertMockRepository.findAll(pageRequestDefault)).thenReturn(new PageImpl<>(alerts, pageRequestDefault, mockSize));
