@@ -17,6 +17,8 @@ public class PublicationDTO {
     public static final String CLIPPING_DATE_IS_REQUIRED = "clippingDate is required";
     public static final String CLIPPING_MATTER_IS_REQUIRED = "clippingMatter is required";
 
+    private Long id;
+
     @NotNull(message = CLIPPING_DATE_IS_REQUIRED)
     private LocalDate clippingDate;
 
@@ -32,5 +34,5 @@ public class PublicationDTO {
     private LocalTime classifiedTime;
 
     private boolean important;
-
+    private boolean viewed;
 }

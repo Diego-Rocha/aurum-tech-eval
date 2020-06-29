@@ -1,17 +1,13 @@
 package io.diego.aurum.tech.eval.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.diego.aurum.tech.eval.business.PublicationBusiness;
 import io.diego.aurum.tech.eval.converter.PublicationConverter;
 import io.diego.aurum.tech.eval.model.dto.PublicationDTO;
 import io.diego.aurum.tech.eval.model.entity.Publication;
 import io.diego.aurum.tech.eval.repository.PublicationRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.ResourceUtils;
@@ -81,7 +75,10 @@ public class PublicationControllerIntegrationTest {
             publicationSaved.setId(validJson.getKey());
             savedPublications.add(publicationToSave);
             when(publicationMockRepository.save(publicationToSave)).thenReturn(publicationSaved);
+            when(publicationMockRepository.findById(validJson.getKey())).thenReturn(Optional.of(publicationSaved));
         }
+
+        when(publicationMockRepository.findById(99L)).thenReturn(Optional.empty());
 
         PageRequest pageRequestDefault = PageRequest.of(0, 10);
         when(publicationMockRepository.findAll(pageRequestDefault)).thenReturn(new PageImpl<>(savedPublications, pageRequestDefault, mockSize));
@@ -193,5 +190,24 @@ public class PublicationControllerIntegrationTest {
                 .andExpect(content().string(CoreMatchers.not(containsString("\"clippingDate\""))))
                 .andExpect(content().string(containsString("\"numberOfElements\":0")))
                 .andDo(document("publication/list/out"));
+    }
+
+    @Test
+    public void whenGet_withId_thenOk() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/publication/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"clippingDate\"")))
+                .andExpect(content().string(containsString("\"clippingMatter\"")))
+                .andExpect(content().string(containsString("\"viewed\":true")))
+                .andExpect(content().string(CoreMatchers.not(containsString("\"totalElements\":" + mockSize))))
+                .andDo(document("publication/id"));
+    }
+
+    @Test
+    public void whenGet_withInvalidId_thenNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/publication/99")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

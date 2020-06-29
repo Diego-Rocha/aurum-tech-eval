@@ -8,8 +8,11 @@ plugins {
 
 group = 'io.diego'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -50,7 +53,6 @@ dependencyManagement {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
-    finalizedBy jacocoTestCoverageVerification
 }
 jacocoTestReport {
     dependsOn test
@@ -62,6 +64,13 @@ jacocoTestCoverageVerification {
             limit {
                 minimum = 0.9
             }
+            element = 'CLASS'
+            includes = [
+                'io.diego.aurum.tech.eval.business.*',
+                'io.diego.aurum.tech.eval.converter.*',
+                'io.diego.aurum.tech.eval.controller.*',
+                'io.diego.aurum.tech.eval.service.*'
+            ]
         }
     }
 }

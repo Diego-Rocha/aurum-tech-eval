@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -43,5 +44,15 @@ public class PublicationController {
         Page<Publication> publicationPage = service.list(PageRequest.of(page, size));
         Page<PublicationDTO> publicationDTOPage = publicationPage.map(PublicationConverter::convert);
         return ResponseEntity.ok(publicationDTOPage);
+    }
+
+    @GetMapping("/{publicationId}")
+    public ResponseEntity<PublicationDTO> view(@PathVariable Long publicationId) {
+        Optional<Publication> publication = service.findById(publicationId);
+        if(!publication.isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+        PublicationDTO publicationDTO = PublicationConverter.convert(publication.get());
+        return ResponseEntity.ok(publicationDTO);
     }
 }

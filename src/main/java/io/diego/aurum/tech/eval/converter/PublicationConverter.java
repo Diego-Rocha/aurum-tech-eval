@@ -13,6 +13,7 @@ public class PublicationConverter {
 
     public Publication convert(PublicationDTO publicationDTO) {
         Publication publication = new Publication();
+        publication.setId(publicationDTO.getId());
         publication.setClippingDate(publicationDTO.getClippingDate());
         publication.setClippingMatter(publicationDTO.getClippingMatter());
         publication.setClassificationType(publicationDTO.getClassificationType());
@@ -24,11 +25,13 @@ public class PublicationConverter {
         }
 
         publication.setImportant(publicationDTO.isImportant());
+        publication.setViewed(publicationDTO.isViewed());
         return publication;
     }
 
     public PublicationDTO convert(Publication publication) {
         PublicationDTO dto = new PublicationDTO();
+        dto.setId(publication.getId());
         dto.setClippingDate(publication.getClippingDate());
         dto.setClippingMatter(publication.getClippingMatter());
         dto.setClassificationType(publication.getClassificationType());
@@ -37,6 +40,7 @@ public class PublicationConverter {
             dto.setClassifiedTime(LocalTime.from(publication.getClassifiedDate()));
         }
         dto.setImportant(publication.isImportant());
+        dto.setViewed(publication.isViewed());
         return dto;
     }
 

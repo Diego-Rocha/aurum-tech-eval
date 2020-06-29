@@ -66,7 +66,6 @@ public class PublicationBusinessTest {
 
     @Test
     public void schedulerTableTest() {
-
         tableTest.forEach((test, expected) -> {
             PublicationBusiness.createAppointment(test);
             if (test.getClassificationType().equals(ClassificationType.HEARING)) {

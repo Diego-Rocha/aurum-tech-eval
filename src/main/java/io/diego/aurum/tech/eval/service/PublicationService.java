@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PublicationService {
@@ -20,16 +22,27 @@ public class PublicationService {
         return repository.save(publication);
     }
 
-    public void delete(long publicationId){
+    public void delete(Long publicationId) {
         repository.deleteById(publicationId);
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         repository.deleteAll();
     }
 
-    public Page<Publication> list(Pageable pageable){
-         return repository.findAll(pageable);
+    public Page<Publication> list(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    public Optional<Publication> findById(Long publicationId) {
+        Optional<Publication> publication = repository.findById(publicationId);
+        publication.ifPresent(this::markAsViewed);
+        return publication;
+    }
+
+    private void markAsViewed(Publication publication) {
+        publication.setViewed(true);
+        save(publication);
     }
 
 }

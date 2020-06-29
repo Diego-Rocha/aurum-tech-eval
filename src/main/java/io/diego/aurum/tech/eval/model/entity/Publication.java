@@ -24,8 +24,8 @@ public class Publication {
     private String clippingMatter;
     private ClassificationType classificationType;
     private LocalDateTime classifiedDate;
-
     private boolean important;
+    private boolean viewed;
 
     @Reference
     private Appointment appointment;

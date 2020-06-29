@@ -18,8 +18,12 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/gcp/credentials.json
 # Generates the jar
 > ./gradlew bootJar
 
-# Generates the Code Coverage Report
+## EXTRAS ##
+# Generates the code coverage report. ouput in:build/reports/jacoco/test/html/index.html
 > ./gradlew jacocoTestReport
+
+# Checks if code coverage is > 90% on packages 'controller, service, business and converter'
+> ./gradlew jacocoTestCoverageVerification
 
 ```
 ## Checklist
@@ -33,7 +37,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/gcp/credentials.json
     - [x] FR 3: when is important then create alert
     - [x] FR 4: delete one/all publications
     - [x] FR 5: list the publications with pagination
-    - [ ] FR 6: view a publication and mark then as viewed
+    - [x] FR 6: view a publication and mark then as viewed
     - [ ] FR 7: list alerts with pagination
     - [ ] FR 8: list commitments with pagination
 - [x] Unit Tests (**Required**)
@@ -53,6 +57,3 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/gcp/credentials.json
  - Gradle
  - Google Cloud API
  - Lombok
- 
-## Extras
- - [Code Coverage needs to be > 90%](./build/reports/jacoco/test/html/index.html) (need to build app first)
