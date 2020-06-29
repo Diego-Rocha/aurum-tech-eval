@@ -66,10 +66,10 @@ jacocoTestCoverageVerification {
             }
             element = 'CLASS'
             includes = [
-                'io.diego.aurum.tech.eval.business.*',
-                'io.diego.aurum.tech.eval.converter.*',
-                'io.diego.aurum.tech.eval.controller.*',
-                'io.diego.aurum.tech.eval.service.*'
+                    'io.diego.aurum.tech.eval.business.*',
+                    'io.diego.aurum.tech.eval.converter.*',
+                    'io.diego.aurum.tech.eval.controller.*',
+                    'io.diego.aurum.tech.eval.service.*'
             ]
         }
     }

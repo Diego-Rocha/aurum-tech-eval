@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +23,7 @@ public class PublicationBusiness {
     private final Pattern DATE_PARSER_PATTERN = Pattern.compile("(?i)(.*)(concilia[c|ç][a|ã]o|audi[e|ê]ncia) para a data de (.*) [a|à]s (\\d{2}:\\d{2})h(.*)");
     private final Collection<DateTimeFormatter> KNOW_DATE_FORMATS = new ArrayList<DateTimeFormatter>() {{
         add(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        add(DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy"));
+        add(DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR")));
     }};
 
     public void beforeSave(Publication publication) {
@@ -31,15 +32,16 @@ public class PublicationBusiness {
     }
 
     private void createAlert(Publication publication) {
-        if(!publication.isImportant()){
+        if (!publication.isImportant()) {
             return;
         }
         Alert alert = new Alert();
         alert.setDate(LocalDateTime.now());
+        alert.setPublication(publication);
         publication.setAlert(alert);
     }
 
-    public void createAppointment(Publication publication) {
+    private void createAppointment(Publication publication) {
         if (!ClassificationType.HEARING.equals(publication.getClassificationType())) {
             return;
         }
@@ -63,11 +65,7 @@ public class PublicationBusiness {
         String dateText = matcher.group(3);
         String timeText = matcher.group(4);
         LocalDateTime date = parseDateTime(dateText, timeText);
-        if (date != null) {
-            publication.getAppointment().setDate(date);
-            return;
-        }
-        publication.getAppointment().setDate(autoScheduler(publication));
+        publication.getAppointment().setDate(date);
     }
 
     private LocalDateTime parseDateTime(String dateText, String timeText) {

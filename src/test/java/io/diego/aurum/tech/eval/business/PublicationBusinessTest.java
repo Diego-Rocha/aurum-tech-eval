@@ -35,6 +35,11 @@ public class PublicationBusinessTest {
         pubHearingNeedParse.setClippingMatter("lorem ipsum conciliacao para a data de 01/02/2020 as 11:05h dolor sit amet");
         tableTest.put(pubHearingNeedParse, "2020-02-01 11:05");
 
+        Publication pubHearingNeedParse2 = new Publication();
+        pubHearingNeedParse2.setClassificationType(ClassificationType.HEARING);
+        pubHearingNeedParse2.setClippingMatter("lorem ipsum conciliacao para a data de 20 de janeiro de 2020 as 09:03h dolor sit amet");
+        tableTest.put(pubHearingNeedParse2, "2020-01-20 09:03");
+
         Publication pubHearingNeedParseWithAccentAndCapitalized = new Publication();
         pubHearingNeedParseWithAccentAndCapitalized.setClassificationType(ClassificationType.HEARING);
         pubHearingNeedParseWithAccentAndCapitalized.setClippingMatter("lorem ipsum Conciliação para a data de 02/05/2022 às 04:07h");
@@ -67,7 +72,7 @@ public class PublicationBusinessTest {
     @Test
     public void schedulerTableTest() {
         tableTest.forEach((test, expected) -> {
-            PublicationBusiness.createAppointment(test);
+            PublicationBusiness.beforeSave(test);
             if (test.getClassificationType().equals(ClassificationType.HEARING)) {
                 assertEquals(expected, dateFormat.format(test.getAppointment().getDate()));
             } else {
