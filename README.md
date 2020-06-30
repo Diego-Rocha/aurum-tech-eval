@@ -44,7 +44,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/gcp/credentials.json
 - [ ] Deploy on Goggle App Engine Standard (25pts)
   - @TODO discover how to use
 - [x] Quality code with Codebeat (GPA > 3 = 20pts)
-  - Currently: [![codebeat badge](https://codebeat.co/badges/3c364388-42ca-40ac-9630-127afe3604c6)](https://codebeat.co/projects/github-com-diego-rocha-aurum-tech-eval-dev)
+  - Currently: [![codebeat badge](https://codebeat.co/badges/a666fc3e-c906-4013-b452-137e0608111a)](https://codebeat.co/projects/github-com-diego-rocha-aurum-tech-eval-master)
 - [x] API Docs  (20pts)
 - [x] A Good Readme and Hosted on Github (10pts)
 
