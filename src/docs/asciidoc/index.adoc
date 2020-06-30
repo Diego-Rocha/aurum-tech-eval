@@ -1,11 +1,59 @@
-= Getting Started With Spring REST Docs
+= Specification for the RESTful Publication API
 
-This is an example output for a service running at http://localhost:8080:
+version: 0.0.1
+
+:doctype: book
+
+== Add a new publication
+A `POST` request is used to add a new publication
 
 .request
 include::{snippets}/publication/save/1/http-request.adoc[]
 
 .response
 include::{snippets}/publication/save/1/http-response.adoc[]
+where the content is the publication `ID`
 
-As you can see the format is very simple, and in fact you always get the same message.
+== Delete all publications
+A `DELETE` request is used to delete all publications
+
+.request
+include::{snippets}/publication/delete/all/http-request.adoc[]
+
+.response
+include::{snippets}/publication/delete/all/http-response.adoc[]
+
+== Delete a specific publication
+A `DELETE` request with `id` is used to delete a specific publication
+
+.request
+include::{snippets}/publication/delete/id/http-request.adoc[]
+
+.response
+include::{snippets}/publication/delete/id/http-response.adoc[]
+
+== Navigate trough the publications
+A `GET` request is used to navigate trough the publications
+
+.request
+include::{snippets}/publication/list/http-request.adoc[]
+
+.response
+include::{snippets}/publication/list/http-response.adoc[]
+
+you also can customize your request using the query parameters `page` and size `size`
+
+.request
+include::{snippets}/publication/list/custom/http-request.adoc[]
+
+.response
+include::{snippets}/publication/list/custom/http-response.adoc[]
+
+== Get one specific publication
+A `GET` request with the `ID` parameter is used to get a specific publications
+
+.request
+include::{snippets}/publication/id/http-request.adoc[]
+
+.response
+include::{snippets}/publication/id/http-response.adoc[]
