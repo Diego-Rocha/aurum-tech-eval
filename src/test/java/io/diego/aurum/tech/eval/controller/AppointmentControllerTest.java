@@ -1,6 +1,7 @@
 package io.diego.aurum.tech.eval.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.diego.aurum.tech.eval.CustomDocumentationConfiguration;
 import io.diego.aurum.tech.eval.converter.PublicationConverter;
 import io.diego.aurum.tech.eval.model.dto.PublicationDTO;
 import io.diego.aurum.tech.eval.model.entity.Appointment;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
@@ -37,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
+@Import(CustomDocumentationConfiguration.class)
 public class AppointmentControllerTest {
 
     @Autowired
@@ -92,7 +95,7 @@ public class AppointmentControllerTest {
                 .andExpect(content().string(containsString("\"date\"")))
                 .andExpect(content().string(containsString("\"publication\"")))
                 .andExpect(content().string(containsString("\"totalElements\":" + mockSize)))
-                .andDo(document("publication/list"));
+                .andDo(document("appointment/list"));
 
     }
 
@@ -107,7 +110,7 @@ public class AppointmentControllerTest {
                 .andExpect(content().string(containsString("\"date\"")))
                 .andExpect(content().string(containsString("\"publication\"")))
                 .andExpect(content().string(containsString("\"totalElements\":" + mockSize)))
-                .andDo(document("publication/list/custom"));
+                .andDo(document("appointment/list/custom"));
 
     }
 
@@ -120,7 +123,7 @@ public class AppointmentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(CoreMatchers.not(containsString("\"publication\""))))
                 .andExpect(content().string(containsString("\"numberOfElements\":0")))
-                .andDo(document("publication/list/out"));
+                .andDo(document("appointment/list/out"));
     }
 
 }
