@@ -12,7 +12,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/gcp/credentials.json
 # Build the app
 > ./gradlew build
 
-# Runs the app (avaliable at http://localhost:8080/publication)
+# Runs the app (avaliable at http://localhost:8080)
 > ./gradlew bootRun
 
 # Generates the jar
